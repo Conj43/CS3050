@@ -3,8 +3,7 @@
 
 Bucket * initBucketArray(int n)
 {   
-    Bucket * p = NULL;
-    p = malloc(sizeof(Bucket)*n);
+    Bucket * p = malloc((sizeof(Bucket))*n);
     for(int i = 0; i<n; i++)
     {
         p[i].min = 0;
@@ -16,6 +15,26 @@ Bucket * initBucketArray(int n)
 void freeBucketArray(Bucket * p)
 {
     free(p);
+}
+
+
+void bubbleSort(float arr[], int n) {
+    int swapped;
+    for (int i = 0; i < n - 1; i++) {
+        swapped = 0; // Flag to check if any swap occurred
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j + 1]
+                float temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = 1; // Set the flag to true
+            }
+        }
+        // If no two elements were swapped in the inner loop, the array is already sorted.
+        if (swapped == 0)
+            break;
+    }
 }
 
 float * findMinMax(float array[], float * min, float * max, int n)
@@ -100,14 +119,95 @@ int interpolationSearch(float array[], int n, float k)
     return index;
 }
 
-
+void findWidestPair(Bucket p, Bucket * array, int currentIndex, float * minPair, float * maxPair, float * difference, int n, float max)
+{
+    printf("currentMax = %f\ncurrentMin = %f\n", p.max, p.min);
+    int j = currentIndex+1;
+    if(p.min != 0)
+    {
+        if(currentIndex==0)
+        {
+            if((array[currentIndex+1].min - p.max) > *difference)
+            {
+                puts("a");
+                *minPair = p.max;
+                *maxPair = array[currentIndex+1].min;
+                *difference = (*maxPair)-(*minPair);
+            }
+        }
+        else if(currentIndex > 0 && currentIndex < (n-1))
+        {
+            
+            if(array[currentIndex+1].min != 0)
+            {
+                if((array[currentIndex+1].min - p.max) > *difference)
+            {
+                puts("b");
+                *minPair = p.max;
+                *maxPair = array[currentIndex+1].min;
+                *difference = (*maxPair)-(*minPair);
+            }
+            }
+            if(array[currentIndex-1].min != 0)
+            {
+                if((p.min - array[currentIndex-1].max > *difference))
+            {
+                puts("c");
+                *minPair = array[currentIndex-1].max;
+                *maxPair = p.min;
+                *difference = (*maxPair)-(*minPair);
+            }
+            }
+            if(array[currentIndex+1].min == 0)
+            {
+                while(array[j].min == 0 && j < (n-1))
+                {
+                    j++;
+                    printf("array[j].min = %f\nj = %d\nn = %d\n", array[j].min, j,n);
+                }
+            if(j == (n-1) && array[j].min == 0)
+            {
+                puts("z");
+                if(max - p.max > *difference)
+                {
+                    puts("d");
+                    *minPair = p.max;
+                    *maxPair = max;
+                    *difference = *maxPair - *minPair;
+                }
+            }
+            if(currentIndex == (n-1))
+            {
+                if(max - p.max > *difference)
+                {
+                    puts("f");
+                    *minPair = p.max;
+                    *maxPair = max;
+                    *difference = *maxPair - *minPair;
+                }
+            }
+            if((array[j].min - p.max) > *difference)
+            {
+                puts("e");
+                *minPair = p.max;
+                *maxPair = array[j].min;
+                *difference = (*maxPair)-(*minPair);
+            }
+            }
+            
+        }
+        printf("difference = %f\nminPair = %f\nmaxPair = %f\n\n", *difference, *minPair, *maxPair);
+    }
+    //printf("difference = %f\nminPair = %f\nmaxPair = %f\n\n", *difference, *minPair, *maxPair);
+}
 
 float findClusterExtreme(float array[], int n)
 {
     float min = 0, max = 0;
     int index = 0;
     array = findMinMax(array, &min, &max, n);
-    Bucket * newArr = initBucketArray(n-1);
+    Bucket * newArr = NULL;
+    newArr = initBucketArray(n-1);
     float minPair = 0, maxPair = 0, difference = 0;
     for(int i = 1; i<(n-1); i++)
     {
@@ -144,62 +244,11 @@ float findClusterExtreme(float array[], int n)
     printf("difference = %f\nminPair = %f\nmaxPair = %f\n\n", difference, minPair, maxPair);
     for(int i = 0; i<(n-1); i++)
     {
-        j=i;
-        if(newArr[i].min != 0)
-        {
-       /*if((newArr[i].max - newArr[i].min) > difference)
-       {
-            minPair = newArr[i].min;
-            maxPair = newArr[i].max;
-            difference = maxPair - minPair;
-       }*/
-        if(newArr[i-1].min != 0)
-       {
-       if(i>0 && (newArr[i].min - newArr[i-1].max) > difference)
-       {
-        minPair = newArr[i-1].max;
-        maxPair = newArr[i].min;
-        difference = maxPair - minPair;
-       }
-       }
-       else if(newArr[i+1].min != 0)
-       {
-        if((newArr[i+1].min - newArr[i].max) > difference)
-        {
-            minPair = newArr[i].max;
-            maxPair = newArr[i+1].min;
-            difference = maxPair - minPair;
-        }
-       }
-       else if(newArr[i+1].min == 0)
-       {
-        while(newArr[j].min == 0 && j != (n-1))
-        {
-            //printf("newArr[j].min and max = %f %f\n", newArr[j].min, newArr[i].max);
-            j++;
-        }
-        
-        if((newArr[j].min - newArr[i].max) > difference && j != (n-1))
-       {
-        minPair = newArr[i].max;
-        maxPair = newArr[j].min;
-        difference = maxPair - minPair;
-       }
-       }
-       if(j == (n-1))
-       {
-        if((max - newArr[i].max) > difference)
-        {
-            minPair = newArr[i].max;
-            maxPair = max;
-            difference = maxPair - minPair;
-        }
-       }
-        }
-        printf("difference = %f\nminPair = %f\nmaxPair = %f\n\n", difference, minPair, maxPair);
+        findWidestPair(newArr[i], newArr, i, &minPair, &maxPair, &difference, n-1, max);
     }
     printf("difference = %f\nminPair = %f\nmaxPair = %f\n\n", difference, minPair, maxPair);
+    free(newArr);
     return minPair;
-    freeBucketArray(newArr);
+    
 }
 

@@ -39,6 +39,11 @@ int main(void)
     }
     float r = findClusterExtreme(arr, size);
     printf("r = %f\n", r);
+    bubbleSort(arr, size);
+    for(int i = 0; i<size; i++)
+    {
+        printf("arr[%d] = %f\n",i, arr[i]);
+    }
     free(arr);
 
 

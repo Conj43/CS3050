@@ -14,3 +14,5 @@ int interpolationSearch(float array[], int n, float k);
 Bucket * initBucketArray(int n);
 float * findMinMax(float array[], float * min, float * max, int n);
 void freeBucketArray(Bucket * p);
+void findWidestPair(Bucket p, Bucket * array, int currentIndex, float * minPair, float * maxPair, float * difference, int n, float max);
+void bubbleSort(float arr[], int n);
