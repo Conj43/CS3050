@@ -3,6 +3,7 @@
 #include<math.h>
 #include<limits.h>
 #include<time.h>
+#include<float.h>
 
 typedef struct buck{
     float min;
@@ -13,6 +14,7 @@ float findClusterExtreme(float array[], int n);   //n is size of array and retur
 int interpolationSearch(float array[], int n, float k);
 Bucket * initBucketArray(int n);
 float * findMinMax(float array[], float * min, float * max, int n);
-void freeBucketArray(Bucket * p);
 void findWidestPair(Bucket p, Bucket * array, int currentIndex, float * minPair, float * maxPair, float * difference, int n, float max);
-void bubbleSort(float arr[], int n);
+clock_t startTime();
+double endTime(clock_t begin);
+double scalingtTest(int size, int i);
