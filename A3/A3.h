@@ -5,6 +5,7 @@
 #include<time.h>
 #include<float.h>
 
+/*this is the struct i use for the buckets, which help find the widest seperated pair*/
 typedef struct buck{
     float min;
     float max;

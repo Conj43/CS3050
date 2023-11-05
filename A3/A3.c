@@ -1,5 +1,5 @@
 #include"A3.h"
-
+//WSP = widest seperated pair
 /*this function allows us to measure the time of the findClusterExtreme function. it just starts our timer or counter, it returns a clock_t
 which is just an unsigned long int, i found this function on stack overflow in order to measure how long my function takes
 so that i can determine its complexity*/
@@ -17,6 +17,7 @@ double endTime(clock_t begin)
 {
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    return time_spent; //return time spent in seconds
 }
 
 /*this function takes an integer, which is going to be the size of our bucket array
@@ -26,11 +27,11 @@ if malloc worked, we return an initialized Bucket array that has every min and m
 Bucket * initBucketArray(int n)
 {   
     Bucket * p = malloc((sizeof(Bucket))*n);
-    if(p)
+    if(p) //if malloc worked
     {
     for(int i = 0; i<n; i++)
     {
-        p[i].min = 0;
+        p[i].min = 0; //set both to 0 so we know if empty
         p[i].max = 0;
     }
     return p;
@@ -263,8 +264,8 @@ float findClusterExtreme(float array[], int n)
     
 }
 
-/*this is the function i used to find the complexity of the findCLusterExtreme function
-you choose how big you want the array to be so you pass in size
+/*this is the function i used to find the complexity of the findClusterExtreme function
+you choose how big you want the randomly generated array to be so you pass in size
 then you choose how many times you want to test it, i, so that you can get the most accurate results
 it returns the average time for the findClusterExtreme function for the size passed in for i tests */
 double scalingtTest(int size, int i)
